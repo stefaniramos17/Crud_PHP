@@ -85,6 +85,16 @@
         </nav>
     </footer>
 
+    <script>
+        const alertMsg = document.getElementById('alert-msg');
+
+        if(alertMsg){
+            setTimeout(() =>{
+                alertMsg.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+
     <script src="assets/js/bootstrap.min.js"></script>
 
 </body>
