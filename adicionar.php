@@ -15,32 +15,31 @@
 // } 
 
 $nome = trim($_POST['nome'] ?? '');
-$email = trim($_POST['email'] ?? '');
+$cargo = trim($_POST['cargo'] ?? '');
+$horario_entrada = trim($_POST['horario_entrada'] ?? '');
 
 $error = '';
 
+if (!empty($nome) && !empty($cargo) && !empty($horario_entrada)) {
 
-if (!empty($nome) && !empty($email)) {
+    //if (filter_var($cargo, FILTER_VALIDATE_EMAIL)) {
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $check = $db->prepare("SELECT id FROM contatos WHERE email = :email");
-        $check->bindValue(':email', $email);
+        $check = $db->prepare("SELECT id FROM funcionario WHERE nome = :nome");
+        $check->bindValue(':nome', $nome);
         $check->execute();
 
         if ($check->rowCount() == 0) {
-            $sql = $db->prepare("INSERT INTO contatos (nome, email) VALUES (:nome, :email)");
+            $sql = $db->prepare("INSERT INTO funcionario (nome, cargo, horario_entrada) VALUES (:nome, :cargo, :horario_entrada)");
             $sql->bindValue(':nome', $nome);
-            $sql->bindValue(':email', $email);
+            $sql->bindValue(':cargo', $cargo);
+            $sql->bindValue(':horario_entrada', $horario_entrada);
             $sql->execute();
             header("Location: index.php");
             exit;
         } else {
-            $error = 'Email já existe!';
+            $error = 'Funcionario já está cadastrado!';
         }
-    }else{
-        $error = 'Email inválido';
     }
-}
 
 
 
@@ -52,19 +51,20 @@ if (!empty($nome) && !empty($email)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Contatos</title>
+    <title>Assiduidade</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 </head>
 
 <body>
 
-    <nav class="navbar bg-dark navbar-dark">
+    <nav class="navbar" style="background-color: #004e18;" data-bs-theme="dark">
         <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1 mx-auto">SISTEMA DE CONTATO</span>
+            <span class="navbar-brand mb-0 h1 mx-auto">ASSIDUIDADE</span>
         </div>
     </nav>
 
     <div class="container mt-3">
+    
 
         <?php if ($error): ?>
             <div class="alert alert-warning"><?= $error ?></div>
@@ -79,11 +79,17 @@ if (!empty($nome) && !empty($email)) {
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Email:</label>
-                <input type="email" class="form-control" name="email" required>
+                <label class="form-label">Cargo:</label>
+                <input type="text" class="form-control" name="cargo" required>
             </div>
-            <button type="submit" class="btn btn-primary">Adicionar</button>
-            <a href="index.php" class="btn btn-secondary">Voltar</a>
+
+            <div class="mb-3">
+                <label class="form-label">Horário de Entrada:</label>
+                <input type="text" class="form-control" name="horario_entrada" required>
+            </div>
+
+            <button type="submit" class="btn btn-outline-success">Adicionar</button>
+            <a href="index.php" class="btn btn-outline-secondary">Voltar</a>
         </form>
 
     </div>

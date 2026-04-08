@@ -1,7 +1,7 @@
 <?php
 
-    $dbname = 'crud_php';
-    $host = 'localhost:4308';
+    $dbname = 'assiduidade_chamada';
+    $host = 'localhost:3307';
     $dbuser = 'root';
     $dbpass = '';
 
@@ -12,6 +12,6 @@
         exit();
     }
 
-    define('BASE_URL', 'http://localhost/crud_php/')
+    define('BASE_URL', 'http://localhost/assiduidade_chamada/')
 
 ?>

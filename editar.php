@@ -7,13 +7,15 @@
         exit;
     }
 
-    if(!empty($_POST['nome']) && !empty($_POST['email'])){
+    if(!empty($_POST['nome']) && !empty($_POST['cargo'])){
         $nome = $_POST['nome'];
-        $email = $_POST['email'];
+        $cargo = $_POST['cargo'];
+        $horario_entrada = $_POST['horario_entrada'];
 
-        $sql = $db->prepare("UPDATE contatos SET nome = :nome, email = :email WHERE id = :id");
+        $sql = $db->prepare("UPDATE funcionario SET nome = :nome, cargo = :cargo, horario_entrada = :horario_entrada WHERE id = :id");
         $sql->bindValue(':nome', $nome);
-        $sql->bindValue(':email', $email);
+        $sql->bindValue(':cargo', $cargo);
+        $sql->bindValue(':horario_entrada', $horario_entrada);
         $sql->bindValue(':id', $id);
         $sql->execute();
         header("Location: index.php");
@@ -21,7 +23,7 @@
 
     }
 
-    $sql = $db->prepare("SELECT * FROM contatos WHERE id = :id");
+    $sql = $db->prepare("SELECT * FROM funcionario WHERE id = :id");
     $sql->bindValue(':id', $id);
     $sql->execute();
 
@@ -35,15 +37,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Contatos</title>
+    <title>Assiduidade</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 </head>
 
 <body>
 
-    <nav class="navbar bg-dark navbar-dark">
+    <nav class="navbar" style="background-color: #004e18;" data-bs-theme="dark">
         <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1 mx-auto">SISTEMA DE CONTATO</span>
+            <span class="navbar-brand mb-0 h1 mx-auto">ASSIDUIDADE</span>
         </div>
     </nav>
 
@@ -58,11 +60,17 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Email:</label>
-                <input type="email" class="form-control" name="email" value="<?= $info['email'] ?>" required>
+                <label class="form-label">Cargo:</label>
+                <input type="text" class="form-control" name="cargo" value="<?= $info['cargo'] ?>" required>
             </div>
-            <button type="submit" class="btn btn-primary">Editar</button>
-            <a href="index.php" class="btn btn-secondary">Voltar</a>
+
+            <div class="mb-3">
+                <label class="form-label">Horário de Entrada:</label>
+                <input type="text" class="form-control" name="horario_entrada" value="<?= $info['horario_entrada'] ?>" required>
+            </div>
+
+            <button type="submit" class="btn btn-outline-success">Editar</button>
+            <a href="index.php" class="btn btn-outline-secondary">Voltar</a>
         </form>
 
     </div>
